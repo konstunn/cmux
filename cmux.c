@@ -344,7 +344,7 @@ char *to_lower(const char *str) {
 }
 
 int main(int argc, char **argv) {
-	int serial_fd, major, speed, i;
+	int serial_fd, speed, i;
 	struct termios tio;
 	int ldisc = N_GSM0710;
 	struct gsm_config gsm;
@@ -378,6 +378,7 @@ int main(int argc, char **argv) {
 	speed = to_line_speed(g_speed);
 	g_type = to_lower(g_type);
 
+	//--- validation ---//
 	if (strcmp(g_type, "default") && strcmp(g_type, "sim900") && strcmp(g_type, "telit"))
 		errx(EXIT_FAILURE, "Invalid value for --type: %s", g_type);
 
@@ -392,6 +393,7 @@ int main(int argc, char **argv) {
 
 	if (match(g_type, "sim900"))
 		g_mtu = 255;
+	//---			---//
 
 	/* print global parameters */
 	dbg(
@@ -513,7 +515,7 @@ int main(int argc, char **argv) {
 
 	/* create the virtual TTYs */
 	if (g_nodes > 0) {
-		int created;
+		int created, major;
 		if ((major = get_major(g_driver)) < 0)
 			errx(EXIT_FAILURE, "Cannot get major number");
 		if ((created = make_nodes(major, g_base, g_nodes)) < g_nodes)
