@@ -1,20 +1,16 @@
 
 CC?=gcc
 CFLAGS?=-Wall -std=gnu99 -g
+
 DESTDIR?=/
 PREFIX?=usr
-TARGETS=cmux test 
 
-all: cmux client test
+TARGETS=cmux client
 
-cmux: cmux.c
-	$(CC) $(CFLAGS) cmux.c -o cmux
+all: cmux client
 
-client: client.c
-	$(CC) $(CFLAGS) client.c -o client
-
-test: test.c
-	$(CC) $(CFLAGS) test.c -o test
+% : %.c
+	$(CC) $(CFLAGS) $< -o $@
 
 install: cmux
 	install -m 0755 cmux $(DESTDIR)/$(PREFIX)/bin/cmux
