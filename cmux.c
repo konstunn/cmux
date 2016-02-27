@@ -609,7 +609,7 @@ int main(int argc, char **argv) {
 		pid_t pppd_pid = fork();
 		if (pppd_pid == 0) // child
 		{
-			// TODO: replace with other exec() function
+			// TODO: replace with other exec() function to refactor
 			if (execlp("pppd", "pppd", "/dev/ttyGSM2", "call", "provider", NULL) == -1)
 				err(EXIT_FAILURE, "execlp(pppd) failed"); 
 		}
@@ -780,7 +780,7 @@ void wait_ifacenewaddr(const char* if_name)
 					{
 						char name[IFNAMSIZ];
 						if_indextoname(ifa->ifa_index, name);
-						if (strstr(name, "ppp") != NULL) {
+						if (strstr(name, if_name) != NULL) {
 							close(sock);
 							return;
 						}
